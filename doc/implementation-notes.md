@@ -63,7 +63,7 @@ model never touches scenery.
 
 - `SternGerlachPanel` — pre-themed panel; all control panels use it so projector-mode switching is automatic.
 - `SternGerlachDialog` — pre-themed dialog wrapper used by all dialogs.
-- `SternGerlachButtonOptions` — flat button/combo-box option bundles (see `CLAUDE.md` for usage rules).
+- `SternGerlachButtonOptions` — flat button/combo-box option bundles (see `AGENTS.md` for usage rules).
 - `TimeModel` — composable play/pause + elapsed-time model, composed into `SternGerlachModel`.
 
 ## Disposal conventions
@@ -92,4 +92,4 @@ pattern (per-screen folders, StringManager getters, shared root model).
 
 This sim is an OpenLyceum accessibility reference: `SternGerlachScreenSummaryContent` with live
 `currentDetailsContent`, explicit `pdomOrder`, and `SternGerlachKeyboardHelpContent`. See
-`CLAUDE.md` and [Baton/ACCESSIBILITY.md](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
+`AGENTS.md` and [Baton/ACCESSIBILITY.md](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
