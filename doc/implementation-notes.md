@@ -85,7 +85,7 @@ chrome) intentionally never dispose.
 
 ## Multi-screen simulations
 
-This sim is single-screen. If it ever grows screens, see `doc/multi-screen.md` for the fleet
+This sim is single-screen. If it ever grows screens, see [SceneryStackTemplate `doc/multi-screen.md`](https://github.com/OpenLyceum/SceneryStackTemplate/blob/main/doc/multi-screen.md) for the fleet
 pattern (per-screen folders, StringManager getters, shared root model).
 
 ## Accessibility reference
