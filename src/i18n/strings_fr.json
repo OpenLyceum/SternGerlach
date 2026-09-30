@@ -109,7 +109,8 @@
     "blockNone": "Ouvert",
     "blockUp": "Bloquer +",
     "blockDown": "Bloquer −",
-    "blockZero": "Bloquer 0"
+    "blockZero": "Bloquer 0",
+    "deleteMark": "✕"
   },
   "a11y": {
     "screenSummary": {

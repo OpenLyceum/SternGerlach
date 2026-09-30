@@ -553,8 +553,8 @@ export class ExperimentAreaNode extends Node {
 
   /** A small × button that deletes the device (builder mode). */
   private createDeleteButton(device: ExperimentDevice, visual: Node): Node {
-    const a11y = StringManager.getInstance().getA11yStrings();
-    const label = new Text("✕", {
+    const strings = StringManager.getInstance();
+    const label = new Text(strings.getControls().deleteMarkStringProperty, {
       font: new PhetFont({ size: 13, weight: "bold" }),
       fill: SternGerlachColors.analyzerLabelFillProperty,
     });
@@ -564,7 +564,7 @@ export class ExperimentAreaNode extends Node {
       cursor: "pointer",
       children: [label],
       tagName: "button",
-      accessibleName: a11y.builder.deleteDeviceButtonStringProperty,
+      accessibleName: strings.getA11yStrings().builder.deleteDeviceButtonStringProperty,
     });
     label.center = new Vector2(9, 9);
     button.right = visual.right + 6;
