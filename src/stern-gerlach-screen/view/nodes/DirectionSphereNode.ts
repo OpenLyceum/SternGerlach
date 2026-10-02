@@ -73,13 +73,13 @@ export class DirectionSphereNode extends Node {
     yAxis.shape = new Shape().moveTo(plusY.x, plusY.y).lineTo(minusY.x, minusY.y);
     zAxis.shape = new Shape().moveTo(0, -RADIUS).lineTo(0, RADIUS);
 
-    const xLabel = new Text("+X", { font: LABEL_FONT, fill: textFill });
+    const xLabel = new Text(controls.axisPlusXStringProperty, { font: LABEL_FONT, fill: textFill });
     xLabel.centerX = plusX.x + 14;
     xLabel.centerY = plusX.y + 10;
-    const yLabel = new Text("+Y", { font: LABEL_FONT, fill: textFill });
+    const yLabel = new Text(controls.axisPlusYStringProperty, { font: LABEL_FONT, fill: textFill });
     yLabel.centerX = plusY.x;
     yLabel.centerY = plusY.y - 12;
-    const zLabel = new Text("+Z", { font: LABEL_FONT, fill: textFill });
+    const zLabel = new Text(controls.axisPlusZStringProperty, { font: LABEL_FONT, fill: textFill });
     zLabel.centerX = -12;
     zLabel.centerY = -RADIUS + 4;
     this.addChild(xLabel);

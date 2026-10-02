@@ -110,7 +110,10 @@
     "blockUp": "Bloquear +",
     "blockDown": "Bloquear −",
     "blockZero": "Bloquear 0",
-    "deleteMark": "✕"
+    "deleteMark": "✕",
+    "axisPlusX": "+X",
+    "axisPlusY": "+Y",
+    "axisPlusZ": "+Z"
   },
   "a11y": {
     "screenSummary": {
@@ -190,7 +193,8 @@
     "howToUseStep2": "Define el estado inicial junto a la fuente: |+z⟩ es el valor por defecto. Prueba luego |−z⟩, |+x⟩ o |−x⟩; Aleatorio y Desconocido sirven después para mezclas y misterios.",
     "howToUseStep3": "Dispara un solo átomo para ver cómo atraviesa el aparato, o cambia a Continuo y activa Observar para ver muchos a la vez.",
     "howToUseStep4": "Activa Valores esperados y usa los botones Hacer N para lanzar grandes lotes: comprueba si las estadísticas de los contadores convergen hacia la predicción.",
-    "howToUseStep5": "Cuando domines lo básico, prueba a bloquear una salida del analizador o a cambiar los ángulos de dirección para ver cómo cambia el resultado."
+    "howToUseStep5": "Cuando domines lo básico, prueba a bloquear una salida del analizador o a cambiar los ángulos de dirección para ver cómo cambia el resultado.",
+    "ketPattern": "|ψ{{index}}⟩"
   },
   "systems": {
     "spinHalf": "Espín ½",

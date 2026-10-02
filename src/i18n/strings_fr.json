@@ -110,7 +110,10 @@
     "blockUp": "Bloquer +",
     "blockDown": "Bloquer −",
     "blockZero": "Bloquer 0",
-    "deleteMark": "✕"
+    "deleteMark": "✕",
+    "axisPlusX": "+X",
+    "axisPlusY": "+Y",
+    "axisPlusZ": "+Z"
   },
   "a11y": {
     "screenSummary": {
@@ -190,7 +193,8 @@
     "howToUseStep2": "Réglez l'état initial près de la source : |+z⟩ est la valeur par défaut. Essayez ensuite |−z⟩, |+x⟩ ou |−x⟩ ; Aléatoire et Inconnu servent plus tard pour les mélanges et les mystères.",
     "howToUseStep3": "Tirez un seul atome pour observer sa trajectoire dans l'appareil, ou passez en mode Continu et activez Observer pour en voir plusieurs à la fois.",
     "howToUseStep4": "Activez Valeurs attendues et utilisez les boutons Faire N pour lancer de grandes séries : vérifiez si les statistiques des compteurs convergent vers la prédiction.",
-    "howToUseStep5": "Une fois les bases maîtrisées, essayez de bloquer une sortie d'analyseur ou de modifier les angles de direction pour voir comment le résultat change."
+    "howToUseStep5": "Une fois les bases maîtrisées, essayez de bloquer une sortie d'analyseur ou de modifier les angles de direction pour voir comment le résultat change.",
+    "ketPattern": "|ψ{{index}}⟩"
   },
   "systems": {
     "spinHalf": "Spin ½",

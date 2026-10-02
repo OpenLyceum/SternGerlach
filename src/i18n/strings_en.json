@@ -110,7 +110,10 @@
     "blockUp": "Block +",
     "blockDown": "Block −",
     "blockZero": "Block 0",
-    "deleteMark": "✕"
+    "deleteMark": "✕",
+    "axisPlusX": "+X",
+    "axisPlusY": "+Y",
+    "axisPlusZ": "+Z"
   },
   "a11y": {
     "screenSummary": {
@@ -190,7 +193,8 @@
     "howToUseStep2": "Set the initial state near the source: |+z⟩ is the default. Try |−z⟩, |+x⟩, or |−x⟩ next; Random and Unknown are for mixture and mystery exercises later.",
     "howToUseStep3": "Fire a single atom to watch it travel through the apparatus, or switch to Continuous and turn on Watch to see many at once.",
     "howToUseStep4": "Turn on Expected Values and use the Do-N buttons to run large batches, then check whether the counter statistics converge to the prediction.",
-    "howToUseStep5": "Once you have the basics, try blocking an analyzer exit or changing the direction angles to see how the outcome shifts."
+    "howToUseStep5": "Once you have the basics, try blocking an analyzer exit or changing the direction angles to see how the outcome shifts.",
+    "ketPattern": "|ψ{{index}}⟩"
   },
   "systems": {
     "spinHalf": "Spin ½",
