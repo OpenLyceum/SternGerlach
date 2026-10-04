@@ -141,7 +141,7 @@ export class ExperimentGraph {
    * user-driven edits should validate with canAddWire first.
    */
   public addWire(wire: Wire): void {
-    const problem = this.wireProblem(wire);
+    const problem = this.wireProblem(wire, null);
     if (problem !== null) {
       throw new Error(problem);
     }
@@ -150,7 +150,15 @@ export class ExperimentGraph {
 
   /** Whether the wire could be added without violating any invariant. */
   public canAddWire(wire: Wire): boolean {
-    return this.wireProblem(wire) === null;
+    return this.wireProblem(wire, null) === null;
+  }
+
+  /**
+   * Whether the wire would be legal if it replaced the wire currently on the same output port.
+   * Lets a re-route be validated without mutating the graph (and so without a change signal).
+   */
+  public canRewire(wire: Wire): boolean {
+    return this.wireProblem(wire, this.getWireFrom(wire.source, wire.outputIndex)) === null;
   }
 
   /** Removes a wire. */
@@ -197,8 +205,11 @@ export class ExperimentGraph {
     return this.devices.filter((device) => device instanceof Counter) as Counter[];
   }
 
-  /** Null if the wire is legal, otherwise a description of the violated invariant. */
-  private wireProblem(wire: Wire): string | null {
+  /**
+   * Null if the wire is legal, otherwise a description of the violated invariant. A non-null
+   * `replacing` wire is treated as already removed.
+   */
+  private wireProblem(wire: Wire, replacing: Wire | null): string | null {
     if (!(this.devices.includes(wire.source) && this.devices.includes(wire.target))) {
       return "both wire endpoints must be devices in the graph";
     }
@@ -208,26 +219,27 @@ export class ExperimentGraph {
     if (wire.source === wire.target) {
       return "a device cannot be wired to itself";
     }
-    if (this.getWireFrom(wire.source, wire.outputIndex) !== null) {
+    const occupant = this.getWireFrom(wire.source, wire.outputIndex);
+    if (occupant !== null && occupant !== replacing) {
       return `output ${wire.outputIndex} of ${wire.source.id} is already wired`;
     }
 
     // Recombination requires every wire into a device to come from the same source device.
-    const wiresIn = this.getWiresInto(wire.target);
+    const wiresIn = this.getWiresInto(wire.target).filter((w) => w !== replacing);
     if (wiresIn.some((w) => w.source !== wire.source)) {
       return `${wire.target.id} already receives input from a different device`;
     }
 
     // Reject cycles: the wire may not make its source reachable from its target.
-    if (this.isReachable(wire.target, wire.source)) {
+    if (this.isReachable(wire.target, wire.source, replacing)) {
       return "the wire would create a cycle";
     }
 
     return null;
   }
 
-  /** Whether `to` can be reached from `from` by following wires forward. */
-  private isReachable(from: ExperimentDevice, to: ExperimentDevice): boolean {
+  /** Whether `to` can be reached from `from` by following wires forward, skipping `ignored`. */
+  private isReachable(from: ExperimentDevice, to: ExperimentDevice, ignored: Wire | null): boolean {
     if (from === to) {
       return true;
     }
@@ -236,7 +248,7 @@ export class ExperimentGraph {
     while (frontier.length > 0) {
       const device = frontier.pop() as ExperimentDevice;
       for (const wire of this.wires) {
-        if (wire.source === device && !visited.has(wire.target)) {
+        if (wire !== ignored && wire.source === device && !visited.has(wire.target)) {
           if (wire.target === to) {
             return true;
           }

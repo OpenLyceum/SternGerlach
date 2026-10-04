@@ -357,12 +357,23 @@ export class SternGerlachModel implements TModel {
 
   /** Rebuilds the board from the selected preset, or restores the retained custom build. */
   private rebuildGraph(): void {
+    // Every rebuild creates a fresh source; carry the user's beam mode and rate over to it.
+    // (Reset All resets the old source first, so it carries the defaults.)
+    const previousSource = this.graph.getSource();
+    const sourceMode = previousSource?.sourceModeProperty.value;
+    const emissionRate = previousSource?.emissionRateProperty.value;
+
     this.rebuildingGraph = true;
     try {
       if (this.experimentProperty.value === ExperimentDefinition.CUSTOM) {
         this.restoreSnapshot(this.customSnapshot ?? DEFAULT_CUSTOM_SNAPSHOT);
       } else {
         this.experimentProperty.value.buildInto(this.graph, this.systemProperty.value);
+      }
+      const source = this.graph.getSource();
+      if (source && sourceMode !== undefined && emissionRate !== undefined) {
+        source.sourceModeProperty.value = sourceMode;
+        source.emissionRateProperty.value = emissionRate;
       }
     } finally {
       this.rebuildingGraph = false;
@@ -490,34 +501,30 @@ export class SternGerlachModel implements TModel {
     this.recomputeProbabilities();
   }
 
-  /** Configuration listeners for a newly added analyzer or magnet. */
+  /**
+   * Listeners for a newly added device: analyzer/magnet settings are configuration changes;
+   * moving any device (builder mode) only re-routes the atoms already flying toward it.
+   * Source mode/rate changes do not invalidate statistics.
+   */
   private attachDeviceListener(device: ExperimentDevice): void {
     const onChange = () => this.handleConfigurationChange();
-    if (device instanceof Analyzer) {
-      device.typeProperty.lazyLink(onChange);
-      device.blockedOutputProperty.lazyLink(onChange);
-      device.thetaProperty.lazyLink(onChange);
-      device.phiProperty.lazyLink(onChange);
-      this.deviceListeners.set(device, () => {
-        device.typeProperty.unlink(onChange);
-        device.blockedOutputProperty.unlink(onChange);
-        device.thetaProperty.unlink(onChange);
-        device.phiProperty.unlink(onChange);
-      });
-    } else if (device instanceof Magnet) {
-      device.typeProperty.lazyLink(onChange);
-      device.fieldNumberProperty.lazyLink(onChange);
-      device.thetaProperty.lazyLink(onChange);
-      device.phiProperty.lazyLink(onChange);
-      this.deviceListeners.set(device, () => {
-        device.typeProperty.unlink(onChange);
-        device.fieldNumberProperty.unlink(onChange);
-        device.thetaProperty.unlink(onChange);
-        device.phiProperty.unlink(onChange);
-      });
-    } else if (device instanceof ParticleSource) {
-      // Source mode/rate changes do not invalidate statistics.
+    const onMove = () => this.particleSystem.retarget(device);
+    const configurationProperties =
+      device instanceof Analyzer
+        ? [device.typeProperty, device.blockedOutputProperty, device.thetaProperty, device.phiProperty]
+        : device instanceof Magnet
+          ? [device.typeProperty, device.fieldNumberProperty, device.thetaProperty, device.phiProperty]
+          : [];
+    for (const property of configurationProperties) {
+      property.lazyLink(onChange);
     }
+    device.positionProperty.lazyLink(onMove);
+    this.deviceListeners.set(device, () => {
+      for (const property of configurationProperties) {
+        property.unlink(onChange);
+      }
+      device.positionProperty.unlink(onMove);
+    });
   }
 
   private detachDeviceListener(device: ExperimentDevice): void {

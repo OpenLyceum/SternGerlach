@@ -82,6 +82,7 @@ Fleet-standard Vitest layout (`happy-dom`, `tests/setup.ts`, `execArgv: ["--expo
 | `tests/model/ExperimentEngine.test.ts` | Monte-Carlo + analytic propagation |
 | `tests/model/ExperimentGraph.test.ts` | Graph invariants + `batch()` change coalescing |
 | `tests/view/ExperimentAreaNode.test.ts` | Board rebuild coalescing + child-disposal leaks (uses `tests/view/simStub.ts`) |
+| `tests/view/UserStateDialog.test.ts` | Dialog construction with assertions enabled (the shared setup leaves them off) |
 | `tests/model/SternGerlachModel.test.ts` | Top-level coordinator |
 | `tests/model/UserStateModel.test.ts` | User-prepared states |
 | `tests/model/Magnet.test.ts` | Magnet device |

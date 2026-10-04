@@ -57,7 +57,7 @@
     "interferometer": "Préparez |+z⟩. Sans Observer, recombiner les deux chemins SGx restaure |+z⟩ au SGz final. Activez Observer et l'interférence disparaît.",
     "blockedArm": "Préparez |+z⟩. Un bras SGx est bloqué, donc l'interférence disparaît même sans Observer — retirer un chemin n'est pas la même chose qu'enregistrer quel chemin.",
     "magnet": "Préparez |+z⟩, puis réglez le champ de l'aimant pour faire précesser le spin avant SGx. Les comptes devraient osciller avec le champ.",
-    "magnetIdentity": "Le champ commence à 72 (un tour complet) : U(2π) = I, donc SGx devrait correspondre au cas sans aimant. Essayez ensuite 36 (demi-tour).",
+    "magnetIdentity": "Le champ commence à 72, où U = I pour les deux systèmes : SGx correspond donc au cas sans aimant. Le spin ½ précesse deux fois plus vite que le spin 1 : à 36, il a déjà fait un tour complet (U = −I, un signe invisible), et à 9, tous les atomes de spin ½ sortent par +x.",
     "recombination": "Préparez |+z⟩. Fusionner certains chemins avant l'analyseur suivant peut restaurer la cohérence — comparez Observer activé et désactivé.",
     "unknownLab": "L'état mystère Inconnu #1 est préparé. Utilisez les compteurs (essayez Z, puis X ou Y) pour inférer quel état propre c'est — sans regarder la sphère de Bloch.",
     "spin1Intro": "Activez Spin 1 dans Préférences (ou ?spinOne). Un analyseur Z se divise alors en trois faisceaux (+1 / 0 / −1). Enchaînez avec Recombinaison.",
@@ -135,7 +135,7 @@
       "doNButtonPattern": "Tirer {{count}} atomes à la fois",
       "watchCheckbox": "Observer le chemin pris par chaque atome",
       "magnetFieldSpinner": "Cadran du champ de l'aimant",
-      "magnetFieldSpinnerHelp": "Règle le cadran de précession de 0 à 99 ; une rotation complète du spin s'effectue tous les 72 pas. Il s'agit d'une position de cadran, et non d'une intensité de champ physique en tesla ou en gauss.",
+      "magnetFieldSpinnerHelp": "Règle le cadran de précession de 0 à 99 ; un état de spin 1 fait un tour complet tous les 72 pas, un état de spin ½ tous les 36. Il s'agit d'une position de cadran, et non d'une intensité de champ physique en tesla ou en gauss.",
       "anglesButton": "Ouvrir les commandes d'angle de direction",
       "thetaControl": "Angle polaire thêta",
       "phiControl": "Angle azimutal phi",
@@ -193,8 +193,7 @@
     "howToUseStep2": "Réglez l'état initial près de la source : |+z⟩ est la valeur par défaut. Essayez ensuite |−z⟩, |+x⟩ ou |−x⟩ ; Aléatoire et Inconnu servent plus tard pour les mélanges et les mystères.",
     "howToUseStep3": "Tirez un seul atome pour observer sa trajectoire dans l'appareil, ou passez en mode Continu et activez Observer pour en voir plusieurs à la fois.",
     "howToUseStep4": "Activez Valeurs attendues et utilisez les boutons Faire N pour lancer de grandes séries : vérifiez si les statistiques des compteurs convergent vers la prédiction.",
-    "howToUseStep5": "Une fois les bases maîtrisées, essayez de bloquer une sortie d'analyseur ou de modifier les angles de direction pour voir comment le résultat change.",
-    "ketPattern": "|ψ{{index}}⟩"
+    "howToUseStep5": "Une fois les bases maîtrisées, essayez de bloquer une sortie d'analyseur ou de modifier les angles de direction pour voir comment le résultat change."
   },
   "systems": {
     "spinHalf": "Spin ½",

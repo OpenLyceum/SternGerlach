@@ -57,7 +57,7 @@
     "interferometer": "Prepara |+z⟩. Con Observar desactivado, recombinar ambos caminos SGx restaura |+z⟩ en el SGz final. Activa Observar y la interferencia desaparece.",
     "blockedArm": "Prepara |+z⟩. Un brazo de SGx está bloqueado, así que la interferencia desaparece incluso con Observar desactivado — quitar un camino no es lo mismo que registrar cuál camino.",
     "magnet": "Prepara |+z⟩ y luego ajusta el campo del imán para hacer precesar el espín antes de SGx. Los conteos deberían oscilar con el campo.",
-    "magnetIdentity": "El campo empieza en 72 (una vuelta completa): U(2π) = I, así que SGx debería coincidir con el caso sin imán. Prueba luego 36 (media vuelta).",
+    "magnetIdentity": "El campo empieza en 72, donde U = I para ambos sistemas, así que SGx coincide con el caso sin imán. El espín ½ precesa el doble de rápido que el espín 1: en 36 ya ha dado una vuelta completa (U = −I, un signo invisible), y con 9 todos los átomos de espín ½ salen por +x.",
     "recombination": "Prepara |+z⟩. Fusionar caminos seleccionados antes del siguiente analizador puede restaurar la coherencia: compara Observar activado y desactivado.",
     "unknownLab": "Se prepara el estado misterioso Desconocido #1. Usa los contadores (prueba Z, luego X o Y) para inferir qué autoestado es — sin mirar la esfera de Bloch.",
     "spin1Intro": "Activa Espín 1 en Preferencias (o ?spinOne). Un analizador Z se divide entonces en tres haces (+1 / 0 / −1). Continúa con Recombinación.",
@@ -135,7 +135,7 @@
       "doNButtonPattern": "Disparar {{count}} átomos a la vez",
       "watchCheckbox": "Observar qué camino toma cada átomo",
       "magnetFieldSpinner": "Dial del campo del imán",
-      "magnetFieldSpinnerHelp": "Ajusta el dial de precesión de 0 a 99; una rotación completa del espín se completa cada 72 pasos. Es una posición del dial, no una intensidad de campo física en tesla o gauss.",
+      "magnetFieldSpinnerHelp": "Ajusta el dial de precesión de 0 a 99; un estado de espín 1 da una vuelta completa cada 72 pasos, uno de espín ½ cada 36. Es una posición del dial, no una intensidad de campo física en tesla o gauss.",
       "anglesButton": "Abrir los controles de ángulo de dirección",
       "thetaControl": "Ángulo polar theta",
       "phiControl": "Ángulo azimutal phi",
@@ -193,8 +193,7 @@
     "howToUseStep2": "Define el estado inicial junto a la fuente: |+z⟩ es el valor por defecto. Prueba luego |−z⟩, |+x⟩ o |−x⟩; Aleatorio y Desconocido sirven después para mezclas y misterios.",
     "howToUseStep3": "Dispara un solo átomo para ver cómo atraviesa el aparato, o cambia a Continuo y activa Observar para ver muchos a la vez.",
     "howToUseStep4": "Activa Valores esperados y usa los botones Hacer N para lanzar grandes lotes: comprueba si las estadísticas de los contadores convergen hacia la predicción.",
-    "howToUseStep5": "Cuando domines lo básico, prueba a bloquear una salida del analizador o a cambiar los ángulos de dirección para ver cómo cambia el resultado.",
-    "ketPattern": "|ψ{{index}}⟩"
+    "howToUseStep5": "Cuando domines lo básico, prueba a bloquear una salida del analizador o a cambiar los ángulos de dirección para ver cómo cambia el resultado."
   },
   "systems": {
     "spinHalf": "Espín ½",

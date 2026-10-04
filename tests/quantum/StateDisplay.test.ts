@@ -33,6 +33,32 @@ describe("StateDisplay", () => {
     expect(bloch.z).toBeCloseTo(0, 10);
   });
 
+  it("maps |+y⟩ to the +Y Bloch pole and |−y⟩ to the −Y pole", () => {
+    const root = 1 / Math.sqrt(2);
+    const plusY = blochVectorFromSpinHalf(new ComplexVector(new Complex(root, 0), new Complex(0, root)));
+    expect(plusY.x).toBeCloseTo(0, 10);
+    expect(plusY.y).toBeCloseTo(1, 10);
+    expect(plusY.z).toBeCloseTo(0, 10);
+    const minusY = blochVectorFromSpinHalf(new ComplexVector(new Complex(root, 0), new Complex(0, -root)));
+    expect(minusY.y).toBeCloseTo(-1, 10);
+  });
+
+  it("carries negative and negative-imaginary amplitudes in the term sign, with a typographic minus", () => {
+    const root = 1 / Math.sqrt(2);
+    expect(ketMarkup(new ComplexVector(new Complex(root, 0), new Complex(0, -root)), SpinSystem.SPIN_HALF)).toBe(
+      "|ψ⟩ = 0.71 |+z⟩<br>− 0.71i |−z⟩",
+    );
+    expect(ketMarkup(new ComplexVector(new Complex(-root, 0), new Complex(root, 0)), SpinSystem.SPIN_HALF)).toBe(
+      "|ψ⟩ = −0.71 |+z⟩<br>+ 0.71 |−z⟩",
+    );
+    expect(formatAmplitude(new Complex(-0.5, 0))).toBe("−0.50");
+  });
+
+  it("parenthesizes full complex coefficients", () => {
+    const state = new ComplexVector(new Complex(0.5, 0), new Complex(0.5, -Math.sqrt(0.5)));
+    expect(ketMarkup(state, SpinSystem.SPIN_HALF)).toBe("|ψ⟩ = 0.50 |+z⟩<br>+ (0.50 − 0.71i) |−z⟩");
+  });
+
   it("reports computational probabilities and readable ket markup for a superposition", () => {
     const root = 1 / Math.sqrt(2);
     const state = new ComplexVector(new Complex(root, 0), new Complex(root, 0));

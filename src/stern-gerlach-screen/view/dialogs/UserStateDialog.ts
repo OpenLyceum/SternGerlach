@@ -125,7 +125,9 @@ export class UserStateDialog extends SternGerlachDialog {
     );
 
     for (let index = 0; index < 3; index++) {
-      const ketLabel = new Text(new PatternStringProperty(dialogs.ketPatternStringProperty, { index: index }), {
+      // Plain string: refreshKetLabels below rewrites it from the basis and system, which a
+      // derived (read-only) string Property would reject.
+      const ketLabel = new Text("", {
         font: new PhetFont({ size: 16, weight: "bold" }),
         fill: mutedFill,
         layoutOptions: { column: 0, row: index + 1 },

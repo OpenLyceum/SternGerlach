@@ -10,6 +10,10 @@
  * the table has eigenvalues in {−1, 0, +1}. fieldNumber is the two-digit
  * 0-99 dial of the original applet.
  *
+ * SPINS convention (kept on purpose): spin-½ operators are Pauli matrices (σ = 2S/ħ), so a
+ * spin-½ state precesses through 2φ while spin-1 precesses through φ. Field 72 is the identity
+ * for both; field 36 is a half turn for spin-1 but a full 2π turn (U = −I) for spin-½.
+ *
  * The propagator is cached and lazily recomputed whenever the field number,
  * type, this magnet's own direction angles, or system changes (the cache key
  * covers all of these through the operator index and θ/φ).
@@ -39,7 +43,7 @@ export class Magnet extends ExperimentDevice {
   /** The observable direction of the magnetic field (shares AnalyzerType with analyzers). */
   public readonly typeProperty: Property<AnalyzerType>;
 
-  /** Field-strength dial, integer 0-99; φ = 2π·number/72, so 72 is a full revolution. */
+  /** Field-strength dial, integer 0-99; φ = 2π·number/72, so 72 gives U = I under both systems. */
   public readonly fieldNumberProperty: NumberProperty;
 
   /** Polar angle θ of this magnet's own n̂ direction, radians. Only meaningful when type is N. */

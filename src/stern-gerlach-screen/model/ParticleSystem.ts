@@ -20,6 +20,7 @@ import type { SpinSystem } from "../../common/quantum/SpinSystem.js";
 import { MAX_LIVE_PARTICLES, PARTICLE_SPEED } from "../../SternGerlachConstants.js";
 import { Analyzer } from "./devices/Analyzer.js";
 import { Counter } from "./devices/Counter.js";
+import type { ExperimentDevice } from "./devices/ExperimentDevice.js";
 import { SourceMode } from "./devices/ParticleSource.js";
 import type { ExperimentEngine, Rng } from "./ExperimentEngine.js";
 import type { ExperimentGraph } from "./ExperimentGraph.js";
@@ -149,6 +150,24 @@ export class ParticleSystem {
     this.particles.length = 0;
     this.emissionAccumulator = 0;
     this.changedEmitter.emit();
+  }
+
+  /**
+   * Re-aims every particle flying toward `device` at its current input port, so moving a device
+   * in builder mode bends the in-flight atoms onto the new wire instead of letting them reach the
+   * old position and jump.
+   */
+  public retarget(device: ExperimentDevice): void {
+    let changed = false;
+    for (const particle of this.particles) {
+      if (particle.target === device) {
+        particle.waypoints = wireWaypoints(particle.position, device.getInputPortPosition());
+        changed = true;
+      }
+    }
+    if (changed) {
+      this.changedEmitter.emit();
+    }
   }
 
   /** Continuous-beam spawning: emissionRate particles per second, capped. */

@@ -49,7 +49,7 @@ export function blochVectorFromSpinHalf(state: ComplexVector): BlochVector {
   const by = b.im;
   return {
     x: 2 * (ax * bx + ay * by),
-    y: 2 * (ay * bx - ax * by),
+    y: 2 * (ax * by - ay * bx),
     z: a.magnitudeSquared() - b.magnitudeSquared(),
   };
 }
@@ -102,18 +102,24 @@ function ketTerm(amp: Complex, label: string, isLeading: boolean, digits: number
   const re = round(amp.re, digits);
   const im = round(amp.im, digits);
   const almostReal = Math.abs(im) < epsilon;
+  const almostImaginary = Math.abs(re) < epsilon;
   const almostOne = almostReal && Math.abs(Math.abs(re) - 1) < epsilon;
   const negative = almostReal && re < 0;
 
   if (almostOne) {
     return { coefficient: "", sign: negative ? "−" : isLeading ? "" : "+", label };
   }
-  // For the leading term, fold a pure-real minus into the coefficient; later terms use sign.
+  // A full complex amplitude is parenthesized so its inner sign never reads as the term's sign.
+  if (!(almostReal || almostImaginary)) {
+    return { coefficient: `(${formatAmplitude(amp, digits)})`, sign: isLeading ? "" : "+", label };
+  }
+  // For the leading term, fold a minus into the coefficient; later terms carry it in `sign`.
   if (isLeading) {
     return { coefficient: formatAmplitude(amp, digits), sign: "", label };
   }
-  if (negative) {
-    return { coefficient: formatReal(Math.abs(re), digits), sign: "−", label };
+  const negativeImaginary = almostImaginary && im < 0;
+  if (negative || negativeImaginary) {
+    return { coefficient: formatAmplitude(amp.timesScalar(-1), digits), sign: "−", label };
   }
   return { coefficient: formatAmplitude(amp, digits), sign: "+", label };
 }
@@ -148,5 +154,6 @@ function formatReal(value: number, digits: number): string {
   if (Object.is(rounded, -0)) {
     return toFixed(0, digits);
   }
-  return toFixed(rounded, digits);
+  // Typographic minus (U+2212), matching the term signs and ket labels.
+  return rounded < 0 ? `−${toFixed(-rounded, digits)}` : toFixed(rounded, digits);
 }

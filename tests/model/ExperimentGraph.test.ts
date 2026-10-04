@@ -22,6 +22,26 @@ describe("ExperimentGraph invariants", () => {
     expect(graph.canAddWire(new Wire(source, 0, b))).toBe(false);
   });
 
+  it("validates a re-route as if the port's current wire were gone, without mutating the graph", () => {
+    const graph = new ExperimentGraph();
+    const source = addSource(graph);
+    const first = addAnalyzer(graph, AnalyzerType.Z);
+    const second = addAnalyzer(graph, AnalyzerType.X);
+    const counter = addCounter(graph);
+    wire(graph, source, 0, first);
+    wire(graph, first, 0, second);
+    let changes = 0;
+    graph.changedEmitter.addListener(() => changes++);
+
+    // The port is occupied, so a plain add fails — but replacing its wire is legal.
+    expect(graph.canAddWire(new Wire(first, 0, counter))).toBe(false);
+    expect(graph.canRewire(new Wire(first, 0, counter))).toBe(true);
+    // Other invariants still apply: second's output back into first would close a cycle.
+    expect(graph.canRewire(new Wire(second, 0, first))).toBe(false);
+    expect(graph.wires.length).toBe(2);
+    expect(changes).toBe(0);
+  });
+
   it("rejects wires into a device from two different source devices", () => {
     const graph = new ExperimentGraph();
     const source = addSource(graph);

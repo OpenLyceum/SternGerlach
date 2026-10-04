@@ -36,7 +36,7 @@ in units of ħ (spin-½ analyzers report ±1 rather than ±ħ/2, matching SPINS)
 | Quantum state | \|ψ⟩ | unit vector in ℂ² (spin-½) or ℂ³ (spin-1) |
 | Measured spin component | Sn | eigenvalues +1, −1 (spin-½); +1, 0, −1 (spin-1) |
 | Analyzer direction | n̂(θ, φ) | θ ∈ [0, π], φ ∈ [0, 2π] — **each n̂ device owns its own pair** |
-| Magnet field dial | n | integer 0–99; precession angle φ = 2π·n/72 (72 = one full turn) |
+| Magnet field dial | n | integer 0–99; propagator phase φ = 2π·n/72 — spin-1 precesses by φ, spin-½ by 2φ (see below) |
 
 ## Governing equations
 
@@ -51,6 +51,21 @@ U = exp(−iHφ) = 1 − i·sin(φ)·H + (cos φ − 1)·H²
 
 which is the closed form of the exponential for any observable H whose eigenvalues lie in
 {−1, 0, +1} — true of every operator in the simulation.
+
+**Precession rate (SPINS convention, kept deliberately).** Spin-½ operators are the Pauli
+matrices σ = 2S/ħ, so for spin-½ U = exp(−iφσ) turns the Bloch vector through **2φ**, while for
+spin-1 (H = S/ħ) the spin turns through **φ**. On the 0–99 dial:
+
+| Field n | φ | Spin-½ rotation | Spin-1 rotation |
+|---|---|---|---|
+| 9 | π/4 | π/2 (quarter turn) | π/4 |
+| 18 | π/2 | π (\|+z⟩ → \|−z⟩) | π/2 (quarter turn) |
+| 36 | π | 2π — U = −I, a global phase | π (half turn) |
+| 72 | 2π | 4π — U = I | 2π — U = I |
+
+Field 72 is therefore the identity for both systems. Spin-½ shows the famous 4π periodicity: at
+36 the state has turned a full circle but picked up a sign, which no counter in a single beam
+can detect.
 
 For an n̂-type magnet, H is Sn at **that magnet's own** (θ, φ). Different n̂ devices in one
 apparatus may point in different directions independently.
@@ -73,7 +88,7 @@ normalized to **detected** atoms, so they converge to each other even when mass 
 
 ## Initial states
 
-- **Random** (default): each atom is emitted in a randomly chosen eigenstate of a fixed basis —
+- **Random**: each atom is emitted in a randomly chosen eigenstate of a fixed basis —
   Sz for spin-½, Sy for spin-1 — with equal probability. This is a *statistical
   mixture*, not a superposition: it gives 50/50 through every analyzer direction for spin-½.
 - **Unknown #1–#4**: hard-coded mystery states for the classic lab exercise of determining an

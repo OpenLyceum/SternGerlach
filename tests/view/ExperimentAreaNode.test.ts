@@ -15,6 +15,7 @@
 
 import type { TReadOnlyProperty } from "scenerystack/axon";
 import { Vector2 } from "scenerystack/dot";
+import type { Node } from "scenerystack/scenery";
 import { describe, expect, it } from "vitest";
 import { StringManager } from "../../src/i18n/StringManager.js";
 import { Analyzer } from "../../src/stern-gerlach-screen/model/devices/Analyzer.js";
@@ -123,5 +124,35 @@ describe("ExperimentAreaNode child disposal", () => {
 
     expect(listenerCount(portPattern)).toBe(baselinePort);
     expect(listenerCount(deleteName)).toBe(baselineDelete);
+  });
+});
+
+describe("ExperimentAreaNode direction controls", () => {
+  /** Visible "Angles…" buttons anywhere under the board. */
+  function visibleAnglesButtons(root: Node): number {
+    const anglesName = StringManager.getInstance().getA11yStrings().controls.anglesButtonStringProperty;
+    let count = 0;
+    const visit = (node: Node): void => {
+      if (!node.visible) {
+        return;
+      }
+      if (node.accessibleName === anglesName.value) {
+        count++;
+      }
+      node.children.forEach(visit);
+    };
+    visit(root);
+    return count;
+  }
+
+  it("offers an n̂ analyzer's own Angles control in presets, not only in Custom", () => {
+    const model = new SternGerlachModel(() => 0.5);
+    const area = new ExperimentAreaNode(model);
+    expect(visibleAnglesButtons(area)).toBe(0); // Single Z: no n̂ device
+
+    model.experimentProperty.value = ExperimentDefinition.PRESETS.find(
+      (preset) => preset.nameKey === "singleN",
+    ) as ExperimentDefinition;
+    expect(visibleAnglesButtons(area)).toBe(1);
   });
 });

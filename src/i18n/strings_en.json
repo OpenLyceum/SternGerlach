@@ -57,7 +57,7 @@
     "interferometer": "Prepare |+z⟩. With Watch off, recombining both SGx paths restores |+z⟩ at the final SGz. Turn Watch on and interference vanishes.",
     "blockedArm": "Prepare |+z⟩. One SGx arm is blocked, so interference is gone even with Watch off — removing a path is not the same as recording which-path.",
     "magnet": "Prepare |+z⟩, then dial the magnet field to precess the spin before SGx. Counts should oscillate with field strength.",
-    "magnetIdentity": "Field starts at 72 (one full turn): U(2π) = I, so SGx should match the no-magnet case. Try 36 (half turn) next.",
+    "magnetIdentity": "Field starts at 72, where U = I for both systems, so SGx matches the no-magnet case. Spin ½ precesses twice as fast as spin 1: at 36 it has already turned a full circle (U = −I, an invisible sign), and at 9 every spin-½ atom exits +x.",
     "recombination": "Prepare |+z⟩. Merging selected paths before the next analyzer can restore coherence — compare Watch on versus off.",
     "unknownLab": "Mystery state Unknown #1 is prepared. Use the counters (try Z, then X or Y) to infer which eigenstate it is — without peeking at the Bloch sphere.",
     "spin1Intro": "Enable Spin 1 in Preferences (or ?spinOne). A Z analyzer then splits into three beams (+1 / 0 / −1). Pair with Recombination next.",
@@ -135,7 +135,7 @@
       "doNButtonPattern": "Fire {{count}} atoms at once",
       "watchCheckbox": "Watch which path each atom takes",
       "magnetFieldSpinner": "Magnet field dial",
-      "magnetFieldSpinnerHelp": "Sets the precession dial from 0 to 99; a full spin rotation completes every 72 steps. This is a dial position, not a physical field strength in tesla or gauss.",
+      "magnetFieldSpinnerHelp": "Sets the precession dial from 0 to 99; a spin-1 state turns a full circle every 72 steps, a spin-½ state every 36. This is a dial position, not a physical field strength in tesla or gauss.",
       "anglesButton": "Open direction-angle controls",
       "thetaControl": "Polar angle theta",
       "phiControl": "Azimuthal angle phi",
@@ -193,8 +193,7 @@
     "howToUseStep2": "Set the initial state near the source: |+z⟩ is the default. Try |−z⟩, |+x⟩, or |−x⟩ next; Random and Unknown are for mixture and mystery exercises later.",
     "howToUseStep3": "Fire a single atom to watch it travel through the apparatus, or switch to Continuous and turn on Watch to see many at once.",
     "howToUseStep4": "Turn on Expected Values and use the Do-N buttons to run large batches, then check whether the counter statistics converge to the prediction.",
-    "howToUseStep5": "Once you have the basics, try blocking an analyzer exit or changing the direction angles to see how the outcome shifts.",
-    "ketPattern": "|ψ{{index}}⟩"
+    "howToUseStep5": "Once you have the basics, try blocking an analyzer exit or changing the direction angles to see how the outcome shifts."
   },
   "systems": {
     "spinHalf": "Spin ½",

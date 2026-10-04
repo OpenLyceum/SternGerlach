@@ -11,7 +11,7 @@
  */
 
 import type { NumberProperty, TReadOnlyProperty } from "scenerystack/axon";
-import { Dimension2, type Range, roundToInterval } from "scenerystack/dot";
+import { Dimension2, type Range, roundToInterval, toDegrees, toFixed } from "scenerystack/dot";
 import { HBox, Text, VBox } from "scenerystack/scenery";
 import { MathSymbols, NumberControl, PhetFont } from "scenerystack/scenery-phet";
 import { FLAT_RECTANGULAR_BUTTON_OPTIONS } from "../../../common/SternGerlachButtonOptions.js";
@@ -29,6 +29,11 @@ const SLIDER_STEP = Math.PI / 12;
 const MINOR_TICK_SPACING = Math.PI / 4;
 
 const TICK_FONT = new PhetFont(12);
+
+/** Angles are stored in radians but read out in whole degrees, which students can compare directly. */
+function formatDegrees(radians: number): string {
+  return `${toFixed(toDegrees(radians), 0)}°`;
+}
 
 function tickLabel(markup: string): Text {
   return new Text(markup, {
@@ -51,7 +56,7 @@ function angleControl(
       fill: SternGerlachColors.textColorProperty,
     },
     numberDisplayOptions: {
-      decimalPlaces: 2,
+      numberFormatter: formatDegrees,
       textOptions: {
         font: new PhetFont(15),
         fill: SternGerlachColors.controlSurfaceTextColorProperty,
@@ -79,6 +84,7 @@ function angleControl(
       minorTickStroke: SternGerlachColors.experimentAreaStrokeProperty,
       majorTickLineWidth: 1.5,
       minorTickLineWidth: 1,
+      pdomCreateAriaValueText: formatDegrees,
     },
     accessibleName,
   });

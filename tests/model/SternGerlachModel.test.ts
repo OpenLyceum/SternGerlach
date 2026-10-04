@@ -144,6 +144,40 @@ describe("SternGerlachModel", () => {
     expect(model.particleSystem.particles.length).toBe(15);
   });
 
+  it("keeps the beam mode and rate across preset and system switches, but not Reset All", () => {
+    const model = new SternGerlachModel(seededRng(13), { spinOneEnabledProperty: new BooleanProperty(true) });
+    model.graph.getSource()?.sourceModeProperty.set(SourceMode.CONTINUOUS);
+    model.graph.getSource()?.emissionRateProperty.set(30);
+
+    model.experimentProperty.value = presetByKey("zThenX");
+    model.systemProperty.value = SpinSystem.SPIN_ONE;
+    model.experimentProperty.value = ExperimentDefinition.CUSTOM;
+    expect(model.graph.getSource()?.sourceModeProperty.value).toBe(SourceMode.CONTINUOUS);
+    expect(model.graph.getSource()?.emissionRateProperty.value).toBe(30);
+
+    model.reset();
+    expect(model.graph.getSource()?.sourceModeProperty.value).toBe(SourceMode.SINGLE);
+  });
+
+  it("moving a device re-aims in-flight atoms at its new input port without clearing counts", () => {
+    const model = new SternGerlachModel(seededRng(13));
+    model.experimentProperty.value = ExperimentDefinition.CUSTOM;
+    const source = model.graph.getSource() as NonNullable<ReturnType<typeof model.graph.getSource>>;
+    const counter = new Counter(new Vector2(2, 0));
+    model.graph.addDevice(counter);
+    model.graph.addWire(new Wire(source, 0, counter));
+    model.fireSingleParticle();
+    const particle = model.particleSystem.particles[0];
+    expect(particle).toBeDefined();
+
+    counter.positionProperty.value = new Vector2(2, 0.5);
+    expect(model.particleSystem.particles).toHaveLength(1);
+    expect(particle?.waypoints.at(-1)?.equals(counter.getInputPortPosition())).toBe(true);
+
+    model.step(5);
+    expect(counter.countProperty.value).toBe(1);
+  });
+
   it("interferometer preset restores the input state when watch is off, 50/50 when on", () => {
     const model = new SternGerlachModel(seededRng(17));
     model.experimentProperty.value = presetByKey("interferometer");

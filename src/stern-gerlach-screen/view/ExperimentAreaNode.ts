@@ -267,6 +267,11 @@ export class ExperimentAreaNode extends Node {
 
     if (editable) {
       this.makeEditable(device, container, visual, belowVisual);
+    } else if (device instanceof Analyzer || device instanceof Magnet) {
+      // Presets lock the type, but an n̂ device's own direction stays adjustable (e.g. Single n̂).
+      const directionButton = this.createDirectionButton(device, belowVisual);
+      container.addChild(directionButton);
+      container.disposeEmitter.addListener(() => directionButton.dispose());
     }
     return container;
   }
@@ -705,19 +710,19 @@ export class ExperimentAreaNode extends Node {
 
   /** Wires an output to a target input, re-routing (replacing) any wire already on that output. */
   private connect(source: ExperimentDevice, outputIndex: number, target: ExperimentDevice): void {
+    const existing = this.model.graph.getWireFrom(source, outputIndex);
+    const wire = new Wire(source, outputIndex, target);
+    // Validate before touching the graph: re-dropping onto the current target or an illegal
+    // target is a no-op and must not clear the counters as a configuration change would.
+    if (existing?.target === target || !this.model.graph.canRewire(wire)) {
+      return;
+    }
     // One structural edit: a re-route must not surface as a disconnect followed by a connect.
     this.model.graph.batch(() => {
-      const existing = this.model.graph.getWireFrom(source, outputIndex);
-      const wire = new Wire(source, outputIndex, target);
       if (existing) {
         this.model.graph.removeWire(existing);
       }
-      if (this.model.graph.canAddWire(wire)) {
-        this.model.graph.addWire(wire);
-      } else if (existing) {
-        // The new connection is illegal; restore the previous wire.
-        this.model.graph.addWire(existing);
-      }
+      this.model.graph.addWire(wire);
     });
   }
 
