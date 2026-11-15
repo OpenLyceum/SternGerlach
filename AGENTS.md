@@ -50,9 +50,7 @@ the `a11y` key in each locale JSON, via `StringManager.getA11yStrings()`. Prefer
 
 ## Compliance carve-outs
 
-- **Hardcoded colors:** preferences control surface `#ffffff` / `#1a1a1a` in
-  `SternGerlachPreferencesNode.ts` — light preference chrome that must stay readable in both
-  profiles (same pattern as Template light control surfaces).
+None.
 
 ## Testing
 
