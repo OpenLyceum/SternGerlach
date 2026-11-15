@@ -14,7 +14,7 @@ import type { SpinSystem } from "./SpinSystem.js";
 export type BlochVector = { x: number; y: number; z: number };
 
 /** One term of a ket expansion, ready for layout (coefficient + basis label). */
-export type KetTerm = {
+type KetTerm = {
   /** Coefficient markup, empty when the amplitude is ≈ ±1 (sign absorbed into `sign`). */
   readonly coefficient: string;
   /** "+" or "−" for every term after the first; "" for the leading term when positive. */
@@ -84,7 +84,7 @@ export function amplitudeBasisLabels(system: SpinSystem, basisCode: string): rea
  * Breaks a state into signed ket terms for structured layout. Near-zero amplitudes
  * are omitted; a lone ≈±1 amplitude yields a bare ket (no coefficient).
  */
-export function ketTerms(state: ComplexVector, system: SpinSystem, digits = 2): KetTerm[] {
+function ketTerms(state: ComplexVector, system: SpinSystem, digits = 2): KetTerm[] {
   const labels = basisLabels(system);
   const terms: KetTerm[] = [];
   for (let i = 0; i < system.stateCount; i++) {

@@ -10,7 +10,7 @@
 import { Circle } from "scenerystack/scenery";
 import SternGerlachColors from "../../../SternGerlachColors.js";
 
-export const PORT_RADIUS = 7;
+const PORT_RADIUS = 7;
 
 export class PortNode extends Circle {
   public constructor(centerX: number, centerY: number, interactive: boolean) {

@@ -31,7 +31,7 @@ import { StringManager } from "../../i18n/StringManager.js";
 import SternGerlachColors from "../../SternGerlachColors.js";
 
 /** How the toolbox creates a device: by drag-out (pointer) or activation (keyboard/click). */
-export type ToolboxItemHandlers = {
+type ToolboxItemHandlers = {
   /** Pointer drag-out: create the device under the pointer and hand off the drag. */
   dragCreate: (event: PressListenerEvent) => void;
   /** Keyboard/click activation: drop the device at a default spot on the board. */
