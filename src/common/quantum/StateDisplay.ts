@@ -23,7 +23,10 @@ type KetTerm = {
   readonly label: string;
 };
 
-/** Formats a complex amplitude for display, e.g. "0.71", "−0.50i", "0.50 + 0.50i". */
+/**
+ * Formats a complex amplitude for display, e.g. "0.71", "−0.50i", "0.50 + 0.50i".
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export function formatAmplitude(c: Complex, digits = 2): string {
   const re = round(c.re, digits);
   const im = round(c.im, digits);

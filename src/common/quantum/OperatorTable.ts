@@ -35,7 +35,10 @@ import { ComplexMatrix } from "./ComplexMatrix.js";
 import { ComplexVector } from "./ComplexVector.js";
 import { SpinSystem } from "./SpinSystem.js";
 
-/** Number of operator matrices (spin-½ + spin-1 fixed ops and Sn pair). */
+/**
+ * Number of operator matrices (spin-½ + spin-1 fixed ops and Sn pair).
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const OPERATOR_COUNT = 8;
 
 /** First direction-dependent operator index (6 = spin-½ Sn, 7 = spin-1 Sn). */
