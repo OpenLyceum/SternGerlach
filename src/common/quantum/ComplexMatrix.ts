@@ -50,7 +50,7 @@ export class ComplexMatrix {
   }
 
   /** Convenience factory from a sparse list of [row, column, value]; unspecified entries are zero. */
-  public static fromEntries(sparseEntries: ReadonlyArray<[number, number, Complex]>): ComplexMatrix {
+  public static fromEntries(sparseEntries: readonly [number, number, Complex][]): ComplexMatrix {
     return ComplexMatrix.build((i, j) => {
       const match = sparseEntries.find(([row, column]) => row === i && column === j);
       return match ? match[2] : Complex.ZERO;

@@ -19,7 +19,7 @@ describe("Magnet.computeU", () => {
   const table = new OperatorTable();
 
   it("U†U = I (on the active subspace) for every type, system, and a spread of fields", () => {
-    const cases: Array<[SpinSystem, AnalyzerType]> = [
+    const cases: [SpinSystem, AnalyzerType][] = [
       [SPIN_HALF, AnalyzerType.Z],
       [SPIN_HALF, AnalyzerType.X],
       [SPIN_HALF, AnalyzerType.Y],
