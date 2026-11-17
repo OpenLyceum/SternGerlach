@@ -13,19 +13,24 @@
  *     forever, and every device-layer rebuild adds more.
  */
 
+import { enableAssert } from "scenerystack/assert";
 import type { TReadOnlyProperty } from "scenerystack/axon";
 import { Vector2 } from "scenerystack/dot";
 import type { Node } from "scenerystack/scenery";
 import { describe, expect, it } from "vitest";
+import { SpinSystem } from "../../src/common/quantum/SpinSystem.js";
 import { StringManager } from "../../src/i18n/StringManager.js";
+import SternGerlachColors from "../../src/SternGerlachColors.js";
 import { Analyzer } from "../../src/stern-gerlach-screen/model/devices/Analyzer.js";
 import { ExperimentDefinition } from "../../src/stern-gerlach-screen/model/ExperimentDefinition.js";
 import { SternGerlachModel } from "../../src/stern-gerlach-screen/model/SternGerlachModel.js";
 import { Wire } from "../../src/stern-gerlach-screen/model/Wire.js";
 import { ExperimentAreaNode } from "../../src/stern-gerlach-screen/view/ExperimentAreaNode.js";
+import { expectNoListenerGrowth } from "../helpers/memoryLeak.js";
 import { installSimStub } from "./simStub.js";
 
 installSimStub();
+enableAssert();
 
 /** A model plus its board view, with the builder unlocked. */
 function customModelWithView(): { model: SternGerlachModel; area: ExperimentAreaNode } {
@@ -105,6 +110,33 @@ function listenerCount(property: TReadOnlyProperty<string>): number {
 }
 
 describe("ExperimentAreaNode child disposal", () => {
+  it("releases localized controls and color listeners across repeated resets", async () => {
+    const { model } = customModelWithView();
+    model.reset();
+    const strings = StringManager.getInstance();
+    const properties = [
+      ...Object.values(SternGerlachColors),
+      ...Object.values(strings.getControls()),
+      ...Object.values(strings.getDialogs()),
+      ...Object.values(strings.getA11yStrings().controls),
+    ];
+    await expectNoListenerGrowth(properties, () => model.reset(), { rounds: 10 });
+    // Exercise magnets, n-hat dialogs, builder labels, and both output counts. End in
+    // the same preset so the live board has the same legitimate listener footprint.
+    await expectNoListenerGrowth(
+      properties,
+      () => {
+        for (const preset of ExperimentDefinition.PRESETS) {
+          model.experimentProperty.value = preset;
+        }
+        model.experimentProperty.value = ExperimentDefinition.CUSTOM;
+        model.systemProperty.value = SpinSystem.SPIN_ONE;
+        model.reset();
+      },
+      { rounds: 2 },
+    );
+  });
+
   it("does not accumulate listeners on localized strings across device-layer rebuilds", () => {
     const { model } = customModelWithView();
     const builderStrings = StringManager.getInstance().getA11yStrings().builder;

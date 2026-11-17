@@ -14,6 +14,7 @@ import { Range } from "scenerystack/dot";
 import { Node, Rectangle, RichText, Text, VBox } from "scenerystack/scenery";
 import { PhetFont } from "scenerystack/scenery-phet";
 import { NumberSpinner } from "scenerystack/sun";
+import { disposeOwnedChildren } from "../../../common/disposeOwnedChildren.js";
 import type { AnalyzerType } from "../../../common/quantum/AnalyzerType.js";
 import type { SpinSystem } from "../../../common/quantum/SpinSystem.js";
 import { FLAT_RECTANGULAR_BUTTON_OPTIONS } from "../../../common/SternGerlachButtonOptions.js";
@@ -107,12 +108,12 @@ export class MagnetNode extends Node {
 
     this.disposeMagnetNode = () => {
       magnet.typeProperty.unlink(typeListener);
-      fieldSpinner.dispose();
     };
   }
 
   public override dispose(): void {
     this.disposeMagnetNode();
+    disposeOwnedChildren(this);
     super.dispose();
   }
 }

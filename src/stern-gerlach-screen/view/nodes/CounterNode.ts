@@ -20,6 +20,7 @@ import { StringUtils } from "scenerystack/phetcommon";
 import type { TColor } from "scenerystack/scenery";
 import { Line, Node, Rectangle, Text } from "scenerystack/scenery";
 import { PhetFont } from "scenerystack/scenery-phet";
+import { disposeOwnedChildren } from "../../../common/disposeOwnedChildren.js";
 import { StringManager } from "../../../i18n/StringManager.js";
 import SternGerlachColors from "../../../SternGerlachColors.js";
 import { MODEL_VIEW_SCALE } from "../../../SternGerlachConstants.js";
@@ -168,6 +169,7 @@ export class CounterNode extends Node {
 
   public override dispose(): void {
     this.disposeCounterNode();
+    disposeOwnedChildren(this);
     super.dispose();
   }
 }

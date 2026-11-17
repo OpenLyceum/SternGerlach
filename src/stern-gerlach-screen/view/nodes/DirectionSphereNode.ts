@@ -15,6 +15,7 @@ import { Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import { Node, Path, RichText, Text } from "scenerystack/scenery";
 import { ArrowNode, PhetFont, ShadedSphereNode } from "scenerystack/scenery-phet";
+import { disposeOwnedChildren } from "../../../common/disposeOwnedChildren.js";
 import { StringManager } from "../../../i18n/StringManager.js";
 import SternGerlachColors from "../../../SternGerlachColors.js";
 
@@ -189,6 +190,7 @@ export class DirectionSphereNode extends Node {
 
   public override dispose(): void {
     this.disposeDirectionSphereNode();
+    disposeOwnedChildren(this);
     super.dispose();
   }
 }

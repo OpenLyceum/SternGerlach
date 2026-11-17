@@ -18,6 +18,7 @@ import type { Emitter, TReadOnlyProperty } from "scenerystack/axon";
 import { Shape } from "scenerystack/kite";
 import { Circle, LinearGradient, Node, Path, Rectangle, RichText } from "scenerystack/scenery";
 import { PhetFont } from "scenerystack/scenery-phet";
+import { disposeOwnedChildren } from "../../../common/disposeOwnedChildren.js";
 import type { AnalyzerType } from "../../../common/quantum/AnalyzerType.js";
 import type { SpinSystem } from "../../../common/quantum/SpinSystem.js";
 import SternGerlachColors from "../../../SternGerlachColors.js";
@@ -82,7 +83,7 @@ export class AnalyzerNode extends Node {
     this.addChild(label);
 
     const rebuildCurves = (system: SpinSystem) => {
-      curvesLayer.removeAllChildren();
+      disposeOwnedChildren(curvesLayer);
       this.flashes = [];
       this.blockers = [];
 
@@ -205,6 +206,7 @@ export class AnalyzerNode extends Node {
 
   public override dispose(): void {
     this.disposeAnalyzerNode();
+    disposeOwnedChildren(this);
     super.dispose();
   }
 }

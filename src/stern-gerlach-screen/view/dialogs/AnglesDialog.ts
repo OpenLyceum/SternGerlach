@@ -14,6 +14,7 @@ import type { NumberProperty, TReadOnlyProperty } from "scenerystack/axon";
 import { Dimension2, type Range, roundToInterval, toDegrees, toFixed } from "scenerystack/dot";
 import { HBox, Text, VBox } from "scenerystack/scenery";
 import { MathSymbols, NumberControl, PhetFont } from "scenerystack/scenery-phet";
+import { disposeOwnedChildren } from "../../../common/disposeOwnedChildren.js";
 import { FLAT_RECTANGULAR_BUTTON_OPTIONS } from "../../../common/SternGerlachButtonOptions.js";
 import { SternGerlachDialog } from "../../../common/SternGerlachDialog.js";
 import { StringManager } from "../../../i18n/StringManager.js";
@@ -91,6 +92,8 @@ function angleControl(
 }
 
 export class AnglesDialog extends SternGerlachDialog {
+  private readonly disposeAnglesDialog: () => void;
+
   public constructor(thetaProperty: NumberProperty, phiProperty: NumberProperty) {
     const strings = StringManager.getInstance();
     const controls = strings.getControls();
@@ -135,11 +138,20 @@ export class AnglesDialog extends SternGerlachDialog {
       ],
     });
 
-    super(content, {
-      title: new Text(dialogs.anglesTitleStringProperty, {
-        font: new PhetFont({ size: 20, weight: "bold" }),
-        fill: SternGerlachColors.textColorProperty,
-      }),
+    const title = new Text(dialogs.anglesTitleStringProperty, {
+      font: new PhetFont({ size: 20, weight: "bold" }),
+      fill: SternGerlachColors.textColorProperty,
     });
+    super(content, { title });
+    this.disposeAnglesDialog = () => {
+      disposeOwnedChildren(content);
+      content.dispose();
+      title.dispose();
+    };
+  }
+
+  public override dispose(): void {
+    super.dispose();
+    this.disposeAnglesDialog();
   }
 }

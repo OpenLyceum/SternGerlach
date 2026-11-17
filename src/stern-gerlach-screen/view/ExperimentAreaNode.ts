@@ -311,6 +311,7 @@ export class ExperimentAreaNode extends Node {
       );
       counterNode.disposeEmitter.addListener(() => {
         this.model.graph.wiresChangedEmitter.removeListener(wireListener);
+        barFillProperty.dispose();
       });
       this.counterNodes.push(counterNode);
       return counterNode;
@@ -535,13 +536,14 @@ export class ExperimentAreaNode extends Node {
     const dialog = new AnglesDialog(device.thetaProperty, device.phiProperty);
     const isDirectionType = new DerivedProperty([device.typeProperty], (type) => type === AnalyzerType.N);
 
+    const label = new Text(controls.anglesStringProperty, {
+      font: new PhetFont(10),
+      fill: LIGHT_SURFACE_TEXT_FILL,
+    });
     const button = new RectangularPushButton({
       ...FLAT_RECTANGULAR_BUTTON_OPTIONS,
       baseColor: SternGerlachColors.controlSurfaceColorProperty,
-      content: new Text(controls.anglesStringProperty, {
-        font: new PhetFont(10),
-        fill: LIGHT_SURFACE_TEXT_FILL,
-      }),
+      content: label,
       listener: () => dialog.show(),
       visibleProperty: isDirectionType,
       accessibleName: a11y.controls.anglesButtonStringProperty,
@@ -550,6 +552,7 @@ export class ExperimentAreaNode extends Node {
     button.top = anchor.bottom + 4;
 
     button.disposeEmitter.addListener(() => {
+      label.dispose();
       dialog.dispose();
       isDirectionType.dispose();
     });
@@ -581,6 +584,7 @@ export class ExperimentAreaNode extends Node {
     button.disposeEmitter.addListener(() => {
       button.removeInputListener(fireListener);
       fireListener.dispose();
+      label.dispose();
     });
     return button;
   }

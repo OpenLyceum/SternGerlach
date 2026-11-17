@@ -9,6 +9,7 @@ import type { TReadOnlyProperty } from "scenerystack/axon";
 import { Shape } from "scenerystack/kite";
 import { Circle, Line, Node, Path, RichText } from "scenerystack/scenery";
 import { PhetFont } from "scenerystack/scenery-phet";
+import { disposeOwnedChildren } from "../../../common/disposeOwnedChildren.js";
 import type { BlochVector } from "../../../common/quantum/StateDisplay.js";
 import SternGerlachColors from "../../../SternGerlachColors.js";
 
@@ -95,6 +96,7 @@ export class BlochSphereNode extends Node {
 
   public override dispose(): void {
     this.disposeBlochSphereNode();
+    disposeOwnedChildren(this);
     super.dispose();
   }
 }

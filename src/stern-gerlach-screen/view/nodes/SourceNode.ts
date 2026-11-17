@@ -21,6 +21,7 @@ import { Dimension2, Range } from "scenerystack/dot";
 import { Circle, LinearGradient, Node, Rectangle, Text } from "scenerystack/scenery";
 import { PhetFont } from "scenerystack/scenery-phet";
 import { AquaRadioButtonGroup, HSlider, RoundPushButton } from "scenerystack/sun";
+import { disposeOwnedChildren } from "../../../common/disposeOwnedChildren.js";
 import { FLAT_BUTTON_APPEARANCE_OPTIONS } from "../../../common/SternGerlachButtonOptions.js";
 import { StringManager } from "../../../i18n/StringManager.js";
 import SternGerlachColors from "../../../SternGerlachColors.js";
@@ -134,14 +135,12 @@ export class SourceNode extends Node {
 
     this.disposeSourceNode = () => {
       source.sourceModeProperty.unlink(modeListener);
-      fireButton.dispose();
-      rateSlider.dispose();
-      modeRadioGroup.dispose();
     };
   }
 
   public override dispose(): void {
     this.disposeSourceNode();
+    disposeOwnedChildren(this);
     super.dispose();
   }
 }
