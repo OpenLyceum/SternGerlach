@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Interactive Stern\u2013Gerlach experiment: assemble analyzers, magnets, and counters; fire spin-\u00bd / spin-1 atoms; compare Monte Carlo counts with analytic quantum predictions.",
+  "description": "Interactive Stern–Gerlach experiment: assemble analyzers, magnets, and counters; fire spin-½ / spin-1 atoms; compare Monte Carlo counts with analytic quantum predictions.",
   "license": "AGPL-3.0-or-later",
   "repository": {
     "type": "git",
@@ -39,12 +39,12 @@
     "test:fuzz": "node scripts/test-fuzz.ts",
     "test:fuzz:quick": "node scripts/test-fuzz.ts 10",
     "test:fuzz:long": "node scripts/test-fuzz.ts 300",
+    "test:soak": "npx playwright test tests/browser/memory-soak.spec.ts",
     "icons": "node scripts/generate-icons.ts",
     "clean": "rm -rf dist",
     "prepare": "test \"$(git rev-parse --show-toplevel 2>/dev/null)\" = \"$PWD\" && git config core.hooksPath .githooks || true",
     "knip": "knip",
-    "test:architecture": "node --test tests/*.node-test.ts",
-    "test:soak": "npx playwright test tests/browser/memory-soak.spec.ts"
+    "test:architecture": "node --test tests/*.node-test.ts"
   },
   "dependencies": {
     "scenerystack": "^3.0.0"

@@ -48,10 +48,6 @@ the `a11y` key in each locale JSON, via `StringManager.getA11yStrings()`. Prefer
 `StringProperty`s for `accessibleName` on interactive nodes. Full convention:
 [Baton/ACCESSIBILITY.md](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
 
-## Compliance carve-outs
-
-- `.github/workflows/ci.yml`: `unused-mode: advisory` until both Knip default and production baselines are reviewed and cleared ([Baton/doc/knip.md](https://github.com/OpenLyceum/Baton/blob/main/doc/knip.md)).
-
 ## Testing
 
 | Path | Purpose |

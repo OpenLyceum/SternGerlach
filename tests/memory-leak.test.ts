@@ -11,6 +11,7 @@ import { BooleanProperty, Emitter, NumberProperty, Property } from "scenerystack
 import { Vector2 } from "scenerystack/dot";
 import { ModelViewTransform2 } from "scenerystack/phetcommon";
 import type { TColor } from "scenerystack/scenery";
+import { it } from "vitest";
 import { SpinSystem } from "../src/common/quantum/SpinSystem.js";
 import type { BlochVector } from "../src/common/quantum/StateDisplay.js";
 import { TimeModel } from "../src/common/TimeModel.js";
@@ -21,6 +22,7 @@ import { Counter } from "../src/stern-gerlach-screen/model/devices/Counter.js";
 import { Magnet } from "../src/stern-gerlach-screen/model/devices/Magnet.js";
 import { ParticleSource } from "../src/stern-gerlach-screen/model/devices/ParticleSource.js";
 import { Wire } from "../src/stern-gerlach-screen/model/Wire.js";
+import { AnglesDialog } from "../src/stern-gerlach-screen/view/dialogs/AnglesDialog.js";
 import { AnalyzerNode } from "../src/stern-gerlach-screen/view/nodes/AnalyzerNode.js";
 import { BlochSphereNode } from "../src/stern-gerlach-screen/view/nodes/BlochSphereNode.js";
 import { CounterNode } from "../src/stern-gerlach-screen/view/nodes/CounterNode.js";
@@ -28,7 +30,8 @@ import { DirectionSphereNode } from "../src/stern-gerlach-screen/view/nodes/Dire
 import { MagnetNode } from "../src/stern-gerlach-screen/view/nodes/MagnetNode.js";
 import { SourceNode } from "../src/stern-gerlach-screen/view/nodes/SourceNode.js";
 import { WireNode } from "../src/stern-gerlach-screen/view/nodes/WireNode.js";
-import { describeDisposalLeaks } from "./helpers/memoryLeak.js";
+import { describeDisposalLeaks, expectNoListenerGrowth } from "./helpers/memoryLeak.js";
+import { installSimStub } from "./view/simStub.js";
 
 // Long-lived state that outlives every created node.
 const blochProperty = new Property<BlochVector | null>({ x: 0, y: 0, z: 1 });
@@ -56,6 +59,14 @@ const mvt = ModelViewTransform2.createSinglePointScaleInvertedYMapping(
 
 describeDisposalLeaks([
   { name: "TimeModel", create: () => new TimeModel(), idempotentDispose: true },
+  {
+    name: "AnglesDialog",
+    create: () => {
+      installSimStub();
+      return new AnglesDialog(thetaProperty, phiProperty);
+    },
+    keepAlive: () => [thetaProperty, phiProperty],
+  },
   { name: "BlochSphereNode", create: () => new BlochSphereNode(blochProperty) },
   { name: "DirectionSphereNode", create: () => new DirectionSphereNode(thetaProperty, phiProperty) },
   {
@@ -97,3 +108,15 @@ describeDisposalLeaks([
     keepAlive: () => [wire, systemProperty, mvt, source, analyzer],
   },
 ]);
+
+it("AnglesDialog releases angle and theme listeners across repeated disposal", async () => {
+  installSimStub();
+  await expectNoListenerGrowth([thetaProperty, phiProperty, ...Object.values(SternGerlachColors)], () => {
+    const dialog = new AnglesDialog(thetaProperty, phiProperty);
+    thetaProperty.value = Math.PI / 2;
+    phiProperty.value = Math.PI;
+    dialog.dispose();
+    thetaProperty.reset();
+    phiProperty.reset();
+  });
+});
