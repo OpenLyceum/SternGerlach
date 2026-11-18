@@ -180,7 +180,7 @@ export class SternGerlachModel implements TModel {
       this.rng,
       () => this.currentUserState(),
     );
-    this.timer = new TimeModel(true);
+    this.timer = new TimeModel({ initiallyPlaying: true });
     this.rebuildingGraph = false;
     this.deviceListeners = new Map();
     this.customSnapshot = null;
