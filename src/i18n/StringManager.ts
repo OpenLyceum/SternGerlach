@@ -109,7 +109,7 @@ export class StringManager {
    * Localized names of the preset experiments, keyed by ExperimentDefinition.nameKey.
    */
   public getExperimentNameProperty(nameKey: string): ReadOnlyProperty<string> {
-    const experiments = stringProperties.experiments as unknown as Record<string, ReadOnlyProperty<string>>;
+    const experiments: Readonly<Record<string, ReadOnlyProperty<string>>> = stringProperties.experiments;
     const property = experiments[`${nameKey}StringProperty`];
     if (!property) {
       throw new Error(`no experiment name string for key "${nameKey}"`);
@@ -121,7 +121,7 @@ export class StringManager {
    * Compact apparatus notation for a preset, e.g. "[SGz → SGx]".
    */
   public getExperimentNotationProperty(nameKey: string): ReadOnlyProperty<string> {
-    const notations = stringProperties.experimentNotation as unknown as Record<string, ReadOnlyProperty<string>>;
+    const notations: Readonly<Record<string, ReadOnlyProperty<string>>> = stringProperties.experimentNotation;
     const property = notations[`${nameKey}StringProperty`];
     if (!property) {
       throw new Error(`no experiment notation string for key "${nameKey}"`);
@@ -133,7 +133,7 @@ export class StringManager {
    * Prediction / observation guidance for a preset.
    */
   public getExperimentGuidanceProperty(nameKey: string): ReadOnlyProperty<string> {
-    const guidance = stringProperties.experimentGuidance as unknown as Record<string, ReadOnlyProperty<string>>;
+    const guidance: Readonly<Record<string, ReadOnlyProperty<string>>> = stringProperties.experimentGuidance;
     const property = guidance[`${nameKey}StringProperty`];
     if (!property) {
       throw new Error(`no experiment guidance string for key "${nameKey}"`);
