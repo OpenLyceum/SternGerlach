@@ -102,7 +102,7 @@ export class SternGerlachScreenSummaryContent extends ScreenSummaryContent {
     super({
       playAreaContent: a11y.screenSummary.playAreaStringProperty,
       controlAreaContent: a11y.screenSummary.controlAreaStringProperty,
-      currentDetailsContentProperty,
+      currentDetailsContent: currentDetailsContentProperty,
       interactionHintContent: a11y.screenSummary.interactionHintStringProperty,
     });
   }
