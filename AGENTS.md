@@ -83,3 +83,7 @@ View nodes that build a `Dialog` need a `phet.joist.sim` global; call `installSi
 - **SPINS reference:** Java source in `../Baseline/SG/spins/source/`; mystery states and preset recipes in
   `ExperimentDefinition.ts`.
 - **PWA:** after `npm run build`, installable offline via Workbox (`dist/manifest.webmanifest`).
+
+## Compliance carve-outs
+
+None.
