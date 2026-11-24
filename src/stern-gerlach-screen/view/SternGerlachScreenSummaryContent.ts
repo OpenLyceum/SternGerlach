@@ -90,7 +90,7 @@ export class SternGerlachScreenSummaryContent extends ScreenSummaryContent {
       system: systemNameProperty,
       initialState: initialStateNameProperty,
       total: model.totalDetectedProperty,
-      watchStatusProperty,
+      watchStatus: watchStatusProperty,
       deadEnd: deadEndPercentProperty,
     });
 
