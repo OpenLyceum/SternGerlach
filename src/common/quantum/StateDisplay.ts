@@ -5,7 +5,7 @@
  * spin-½, Born probabilities in a chosen basis, and a readable ket equation.
  */
 
-import { toFixed } from "scenerystack/dot";
+import { roundSymmetric, toFixed } from "scenerystack/dot";
 import type { Complex } from "./Complex.js";
 import type { ComplexVector } from "./ComplexVector.js";
 import type { SpinSystem } from "./SpinSystem.js";
@@ -149,7 +149,7 @@ export function ketMarkup(state: ComplexVector, system: SpinSystem, digits = 2):
 
 function round(value: number, digits: number): number {
   const factor = 10 ** digits;
-  return Math.round(value * factor) / factor;
+  return roundSymmetric(value * factor) / factor;
 }
 
 function formatReal(value: number, digits: number): string {

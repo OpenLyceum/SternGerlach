@@ -14,7 +14,7 @@
  */
 
 import { DerivedProperty, PatternStringProperty, Property, type TReadOnlyProperty } from "scenerystack/axon";
-import { Vector2 } from "scenerystack/dot";
+import { roundSymmetric, Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import { ModelViewTransform2 } from "scenerystack/phetcommon";
 import type { PressListenerEvent, TColor } from "scenerystack/scenery";
@@ -534,7 +534,7 @@ export class ExperimentAreaNode extends Node {
     const a11y = strings.getA11yStrings();
 
     const dialog = new AnglesDialog(device.thetaProperty, device.phiProperty);
-    const isDirectionType = new DerivedProperty([device.typeProperty], (type) => type === AnalyzerType.N);
+    const isDirectionTypeProperty = new DerivedProperty([device.typeProperty], (type) => type === AnalyzerType.N);
 
     const label = new Text(controls.anglesStringProperty, {
       font: new PhetFont(10),
@@ -545,7 +545,7 @@ export class ExperimentAreaNode extends Node {
       baseColor: SternGerlachColors.controlSurfaceColorProperty,
       content: label,
       listener: () => dialog.show(),
-      visibleProperty: isDirectionType,
+      visibleProperty: isDirectionTypeProperty,
       accessibleName: a11y.controls.anglesButtonStringProperty,
     });
     button.centerX = 0;
@@ -554,7 +554,7 @@ export class ExperimentAreaNode extends Node {
     button.disposeEmitter.addListener(() => {
       label.dispose();
       dialog.dispose();
-      isDirectionType.dispose();
+      isDirectionTypeProperty.dispose();
     });
     return button;
   }
@@ -733,7 +733,7 @@ export class ExperimentAreaNode extends Node {
   /** Snaps a device to the coarse builder grid, then keeps it on the board. */
   private snapToGrid(device: ExperimentDevice): void {
     const p = device.positionProperty.value;
-    device.positionProperty.value = new Vector2(Math.round(p.x / GRID) * GRID, Math.round(p.y / GRID) * GRID);
+    device.positionProperty.value = new Vector2(roundSymmetric(p.x / GRID) * GRID, roundSymmetric(p.y / GRID) * GRID);
     this.clampToBoard(device);
   }
 

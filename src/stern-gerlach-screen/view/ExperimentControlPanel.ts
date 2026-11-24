@@ -9,6 +9,7 @@
  */
 
 import { DerivedProperty, DynamicProperty, PatternStringProperty } from "scenerystack/axon";
+import { roundSymmetric } from "scenerystack/dot";
 import type { Node } from "scenerystack/scenery";
 import { HBox, HSeparator, RichText, Text, VBox } from "scenerystack/scenery";
 import { PhetFont } from "scenerystack/scenery-phet";
@@ -90,9 +91,11 @@ export class ExperimentControlPanel extends SternGerlachPanel {
       leading: 3,
     });
 
-    const deadEndPercent = new DerivedProperty([model.deadEndProbabilityProperty], (p) => Math.round(100 * p));
+    const deadEndPercentProperty = new DerivedProperty([model.deadEndProbabilityProperty], (p) =>
+      roundSymmetric(100 * p),
+    );
     const deadEndText = new Text(
-      new PatternStringProperty(controls.deadEndPatternStringProperty, { percent: deadEndPercent }),
+      new PatternStringProperty(controls.deadEndPatternStringProperty, { percent: deadEndPercentProperty }),
       {
         font: new PhetFont(11),
         fill: SternGerlachColors.textColorProperty,

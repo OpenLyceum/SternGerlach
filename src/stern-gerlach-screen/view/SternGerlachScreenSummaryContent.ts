@@ -2,13 +2,14 @@
  * SternGerlachScreenSummaryContent.ts
  *
  * The accessible screen summary read by screen readers (SceneryStack's
- * Interactive Description). `currentDetailsContent` is a live DerivedProperty
+ * Interactive Description). `currentDetailsContentProperty` is a live DerivedProperty
  * over experiment, system, initial state, detection count, watch, dead-end
  * probability, and builder mode so screen-reader users can re-read the
  * simulation's current state.
  */
 
 import { DerivedProperty, DynamicProperty, PatternStringProperty } from "scenerystack/axon";
+import { roundSymmetric } from "scenerystack/dot";
 import { ScreenSummaryContent } from "scenerystack/sim";
 import { SpinSystem } from "../../common/quantum/SpinSystem.js";
 import { StringManager } from "../../i18n/StringManager.js";
@@ -24,24 +25,24 @@ export class SternGerlachScreenSummaryContent extends ScreenSummaryContent {
     const systems = strings.getSystems();
 
     // DynamicProperty tracks both the selected experiment AND the live locale.
-    const experimentName = new DynamicProperty<string, string, ExperimentDefinition>(model.experimentProperty, {
+    const experimentNameProperty = new DynamicProperty<string, string, ExperimentDefinition>(model.experimentProperty, {
       derive: (experiment) => strings.getExperimentNameProperty(experiment.nameKey),
     });
 
-    const systemName = new DerivedProperty(
+    const systemNameProperty = new DerivedProperty(
       [model.systemProperty, systems.spinHalfStringProperty, systems.spinOneStringProperty],
       (system) =>
         system === SpinSystem.SPIN_ONE ? systems.spinOneStringProperty.value : systems.spinHalfStringProperty.value,
     );
 
-    const unknownNumber = new DerivedProperty([model.initialStateProperty], (setting) =>
+    const unknownNumberProperty = new DerivedProperty([model.initialStateProperty], (setting) =>
       setting.unknownIndex !== null ? setting.unknownIndex + 1 : 1,
     );
     const unknownLabel = new PatternStringProperty(controls.unknownPatternStringProperty, {
-      number: unknownNumber,
+      number: unknownNumberProperty,
     });
 
-    const initialStateName = new DerivedProperty(
+    const initialStateNameProperty = new DerivedProperty(
       [
         model.initialStateProperty,
         unknownLabel,
@@ -75,23 +76,25 @@ export class SternGerlachScreenSummaryContent extends ScreenSummaryContent {
       },
     );
 
-    const watchStatus = new DerivedProperty(
+    const watchStatusProperty = new DerivedProperty(
       [model.watchProperty, a11y.watchOnStringProperty, a11y.watchOffStringProperty],
       (watch, on, off) => (watch ? on : off),
     );
 
-    const deadEndPercent = new DerivedProperty([model.deadEndProbabilityProperty], (p) => Math.round(100 * p));
+    const deadEndPercentProperty = new DerivedProperty([model.deadEndProbabilityProperty], (p) =>
+      roundSymmetric(100 * p),
+    );
 
     const currentDetailsBase = new PatternStringProperty(a11y.currentDetailsPatternStringProperty, {
-      experiment: experimentName,
-      system: systemName,
-      initialState: initialStateName,
+      experiment: experimentNameProperty,
+      system: systemNameProperty,
+      initialState: initialStateNameProperty,
       total: model.totalDetectedProperty,
-      watchStatus,
-      deadEnd: deadEndPercent,
+      watchStatus: watchStatusProperty,
+      deadEnd: deadEndPercentProperty,
     });
 
-    const currentDetailsContent = new DerivedProperty(
+    const currentDetailsContentProperty = new DerivedProperty(
       [currentDetailsBase, model.isCustomProperty, a11y.currentDetailsBuilderSuffixStringProperty],
       (base, isCustom, suffix) => (isCustom ? `${base}${suffix}` : base),
     );
@@ -99,7 +102,7 @@ export class SternGerlachScreenSummaryContent extends ScreenSummaryContent {
     super({
       playAreaContent: a11y.screenSummary.playAreaStringProperty,
       controlAreaContent: a11y.screenSummary.controlAreaStringProperty,
-      currentDetailsContent,
+      currentDetailsContent: currentDetailsContentProperty,
       interactionHintContent: a11y.screenSummary.interactionHintStringProperty,
     });
   }
