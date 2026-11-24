@@ -146,9 +146,9 @@ export class UserStateDialog extends SternGerlachDialog {
       imSpinner.layoutOptions = { column: 2, row: index + 1 };
 
       if (index === 2) {
-        const visible = new DerivedProperty([systemProperty], (system) => system.stateCount === 3);
+        const visibleProperty = new DerivedProperty([systemProperty], (system) => system.stateCount === 3);
         for (const node of [ketLabel, reSpinner, imSpinner] as Node[]) {
-          node.setVisibleProperty(visible);
+          node.setVisibleProperty(visibleProperty);
         }
       }
 
